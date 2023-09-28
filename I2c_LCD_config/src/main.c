@@ -1,13 +1,35 @@
 #include "stm32f10x.h"
 #include "i2c_lcd.h"
 
-void Delay1Ms(void);
-void Delay_Ms(uint32_t u32DelayInMs);
-void delay_us(uint32_t delay);
+
+void GPIO_INIT()
+{
+	GPIO_InitTypeDef gpioInit;
+	TIM_TimeBaseInitTypeDef timerInit;
+
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE); // Cấp clock cho TIM 2
+
+	gpioInit.GPIO_Mode = GPIO_Mode_Out_PP; // Cài đặt chân C13
+	gpioInit.GPIO_Pin = GPIO_Pin_13;
+	gpioInit.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(GPIOC, &gpioInit);
+
+	gpioInit.GPIO_Mode = GPIO_Mode_Out_PP; // Cài đặt chân A0
+	gpioInit.GPIO_Pin = GPIO_Pin_0;
+	gpioInit.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(GPIOA, &gpioInit);
+
+	timerInit.TIM_CounterMode = TIM_CounterMode_Up; // Cài đặt cho TIM 2
+	timerInit.TIM_Period = 0xFFFF;
+	timerInit.TIM_Prescaler = 72 - 1;
+	TIM_TimeBaseInit(TIM2, &timerInit);
+	TIM_Cmd(TIM2, ENABLE);
+}
 
 void Delay1Ms(void)
 {
-
 	TIM_SetCounter(TIM2, 0);
 	while (TIM_GetCounter(TIM2) < 1000) {
 	}
@@ -15,7 +37,6 @@ void Delay1Ms(void)
 
 void delay_us(uint32_t delay)
 {
-
 	TIM_SetCounter(TIM2, 0);
 	while (TIM_GetCounter(TIM2) < delay) {
 	}
@@ -23,14 +44,13 @@ void delay_us(uint32_t delay)
 
 void Delay_Ms(uint32_t u32DelayInMs)
 {
-
 	while (u32DelayInMs) {
 		Delay1Ms();
 		--u32DelayInMs;
 	}
 }
 
-
+/**<  *********************************************************************************/
 
 #define SDA_0 GPIO_ResetBits(GPIOA, GPIO_Pin_0)
 #define SDA_1 GPIO_SetBits(GPIOA, GPIO_Pin_0)
@@ -180,32 +200,11 @@ void send(uint8_t u8Data)
 	}
 }
 
+
+
 int main(void)
 {
     uint8_t i, ACK, Address = 0;
-
-	GPIO_InitTypeDef gpioInit;
-	TIM_TimeBaseInitTypeDef timerInit;
-
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE); // Cấp clock cho TIM 2
-
-	gpioInit.GPIO_Mode = GPIO_Mode_Out_PP; // Cài đặt chân C13
-	gpioInit.GPIO_Pin = GPIO_Pin_13;
-	gpioInit.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(GPIOC, &gpioInit);
-
-	gpioInit.GPIO_Mode = GPIO_Mode_Out_PP; // Cài đặt chân A0
-	gpioInit.GPIO_Pin = GPIO_Pin_0;
-	gpioInit.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(GPIOA, &gpioInit);
-
-	timerInit.TIM_CounterMode = TIM_CounterMode_Up; // Cài đặt cho TIM 2
-	timerInit.TIM_Period = 0xFFFF;
-	timerInit.TIM_Prescaler = 72 - 1;
-	TIM_TimeBaseInit(TIM2, &timerInit);
-	TIM_Cmd(TIM2, ENABLE);
 
 	// Dò địa chỉ của i2c
 	for(i = 2; i < 255; ++i)
@@ -223,10 +222,12 @@ int main(void)
         }
     }
 
+    GPIO_INIT();
 	i2c_init();
 	I2C_LCD_Init();
 	I2C_LCD_Clear();
 	I2C_LCD_BackLight(1);
+
 	I2C_LCD_Puts("Hello world");
 	I2C_LCD_NewLine();
 	I2C_LCD_Puts("I2C: PA0 - PA1");
