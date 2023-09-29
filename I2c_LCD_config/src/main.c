@@ -69,6 +69,7 @@ void i2c_stop(void);
 uint8_t i2c_write(uint8_t u8Data);
 uint8_t i2c_read(uint8_t u8Ack);
 
+/**<            */
 void i2c_init(void) // Khởi tạo chân SDA- chân A0 và SCL- chân A1
 {
     GPIO_InitTypeDef gpioInit;
@@ -221,6 +222,8 @@ void send(uint8_t u8Data)
     }
 }
 
+/**<  */
+
 uint8_t findAddress()
 {
     uint8_t i, ACK, Address = 0;
@@ -244,25 +247,21 @@ uint8_t findAddress()
 
 int main(void)
 {
-    uint8_t Address = 0;
-    Address =  findAddress();
-
     GPIO_INIT();
-    i2c_init();
-    I2C_LCD_Init();
 
-    I2C_LCD_Clear();
-    I2C_LCD_BackLight(1);
-    I2C_LCD_Puts("Hello world");
-    I2C_LCD_NewLine();
-    I2C_LCD_Puts("I2C: PA0 - PA1");
+	i2c_init();
 
-    while (1)
-    {
-        send(Address);
-        GPIO_SetBits(GPIOC, GPIO_Pin_13);
-        Delay_Ms(500);
-        GPIO_ResetBits(GPIOC, GPIO_Pin_13);
-        Delay_Ms(500);
-    }
+	I2C_LCD_Init();
+	I2C_LCD_Clear();
+	I2C_LCD_BackLight(1);
+	I2C_LCD_Puts("Hello world");
+	I2C_LCD_NewLine();
+	I2C_LCD_Puts("I2C: PA0 - PA1");
+
+	while (1) {
+		GPIO_SetBits(GPIOC, GPIO_Pin_13);
+		Delay_Ms(500);
+		GPIO_ResetBits(GPIOC, GPIO_Pin_13);
+		Delay_Ms(500);
+	}
 }
