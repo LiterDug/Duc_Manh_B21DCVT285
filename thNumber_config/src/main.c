@@ -16,10 +16,24 @@
 #include "stm32f10x_rcc.h"
 #include "Delay.h"
 
-uint16_t dataPin  = GPIO_Pin_5;
-uint16_t clockPin = GPIO_Pin_6;
-uint16_t latchPin = GPIO_Pin_7;
 
+/**************************************************< thNumber *************************************************/
+uint16_t dataPin  = GPIO_Pin_0; // Port A
+uint16_t clockPin = GPIO_Pin_1;
+uint16_t latchPin = GPIO_Pin_2;
+
+// Khai bao ham
+GPIO_InitTypeDef GPIO_Struct, GPIO_StructB;
+void thNumberConfig()
+{
+// cap clock cho GPIOA
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
+//cai dat cho chan
+    GPIO_Struct.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_Struct.GPIO_Pin =  dataPin | clockPin | latchPin;
+    GPIO_Struct.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA, &GPIO_Struct);
+}
 #define LSBFIRST 0b10000000
 #define MSBFIRST 0b01000000
 
@@ -59,36 +73,13 @@ uint8_t numTodigit(int num)
     if(num == 9) return num_9;
 }
 
-// Khai bao ham
-GPIO_InitTypeDef GPIO_Struct, GPIO_StructB;
+
 uint8_t numTodigit(int num);
 void shipOut(uint16_t dataPin, uint16_t clockPin, uint16_t bitOrder, uint16_t val);
 void shipOut4Num();
 void setNum(int num);
 void setDot(int position);
 void deleteDot(int position);
-
-void thNumberConfig()
-{
-// cap clock cho GPIOA
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
-//cai dat cho chan
-    GPIO_Struct.GPIO_Mode = GPIO_Mode_Out_PP;
-    GPIO_Struct.GPIO_Pin =  dataPin | clockPin | latchPin;
-    GPIO_Struct.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOA, &GPIO_Struct);
-}
-
-int main(void)
-{
-    SysTick_Init();
-    thNumberConfig();
-
-    while(1)
-    {
-        setNum(1234);
-    }
-}
 
 void shipOut(uint16_t dataPin, uint16_t clockPin, uint16_t bitOrder, uint16_t val)
 {
@@ -143,6 +134,21 @@ void deleteDot(int position)
     digit[position] &= -dot;
 }
 
+
+
+
+
+
+int main(void)
+{
+    SysTick_Init();
+    thNumberConfig();
+
+    while(1)
+    {
+        setNum(1234);
+    }
+}
 
 
 

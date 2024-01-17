@@ -1,7 +1,38 @@
 #include "stm32f10x.h"
 
+/**< Cấu hình delay TIM2   *******************************************************************/
+#define TIMclock TIM2
+void GPIO_INIT()
+{
+    TIM_TimeBaseInitTypeDef timerInit;
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE); /**< Cấp clock cho TIM  */
+    timerInit.TIM_CounterMode = TIM_CounterMode_Up; // Cài đặt cho TIM 2
+    timerInit.TIM_Period = 0xFFFF;
+    timerInit.TIM_Prescaler = 72 - 1;
+    TIM_TimeBaseInit(TIMclock, &timerInit);
+    TIM_Cmd(TIMclock, ENABLE);
+}
+void delay_us(uint32_t delay)
+{
+    TIM_SetCounter(TIMclock, 0);
+    while (TIM_GetCounter(TIMclock) < delay)
+    {
+    }
+}
 
-// cau hinh led chan PB2
+void delay_ms(uint32_t u32DelayInMs)
+{
+    while (u32DelayInMs)
+    {
+        TIM_SetCounter(TIMclock, 0);
+        while (TIM_GetCounter(TIMclock) < 1000)
+        {
+        }
+        --u32DelayInMs;
+    }
+}
+
+/*************************< Cấu hinh led chan PB2 *******************************************************************/
 void GPIO_configuration(void)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
@@ -11,6 +42,8 @@ void GPIO_configuration(void)
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(GPIOB, &GPIO_InitStructure);
 }
+
+/**********************************************< Cấu hình TIM4  ********************************************/
 // cau hinh timer 4
 void TIM4_configuration(void)
 {
@@ -19,14 +52,17 @@ void TIM4_configuration(void)
 
     TIM_InitStructure.TIM_ClockDivision = 0;
     TIM_InitStructure.TIM_CounterMode = TIM_CounterMode_Up;
-    TIM_InitStructure.TIM_Period = 2000 - 1; // 1 giây 2000 clock
-    TIM_InitStructure.TIM_Prescaler = 72000000-1; // (72x10^6 / 2000) - 1
+    TIM_InitStructure.TIM_Period = 10000 - 1;
+    TIM_InitStructure.TIM_Prescaler = 7200-1; /// 72MHz / (10000 * 7200) = 1Hz
     TIM_InitStructure.TIM_RepetitionCounter = 0;
 
     TIM_TimeBaseInit(TIM4, &TIM_InitStructure);
-    TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE); //enable update (interrup
+    TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE); //enable update (interrupt)
     TIM_Cmd(TIM4, ENABLE); // khởi động TIM4
 }
+
+
+/**********************************************< Cấu hình ngắt  ********************************************/
 // su kien ngat
 void NVIC_configuration(void)
 {
@@ -45,10 +81,11 @@ void TIM4_IRQHandler(void)
     if(TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET) //if update flagturn on
     {
         TIM_ClearITPendingBit(TIM4, TIM_IT_Update); //clear update flag
-        GPIO_WriteBit(GPIOB, GPIO_Pin_2,
-                      (BitAction)(1^GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_2)));
+        GPIO_WriteBit(GPIOB, GPIO_Pin_2,  (BitAction)(1^GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_2)));
     }
 }
+
+
 int main(void)
 {
     SystemInit();

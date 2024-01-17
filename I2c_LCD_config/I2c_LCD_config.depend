@@ -223,7 +223,7 @@
 	"stm32f10x.h"
 	"i2c_lcd.h"
 
-1695977221 source:f:\admin\documents\1_git_stm32\i2c_lcd_config\src\main.c
+1696696741 source:f:\admin\documents\1_git_stm32\i2c_lcd_config\src\main.c
 	"stm32f10x.h"
 	"i2c_lcd.h"
 
@@ -342,7 +342,7 @@
 1695180221 f:\admin\documents\1_git_stm32\i2c_lcd_config\spl\inc\misc.h
 	"stm32f10x.h"
 
-1585130625 f:\admin\documents\1_git_stm32\i2c_lcd_config\src\i2c_lcd.h
+1696154505 f:\admin\documents\1_git_stm32\i2c_lcd_config\src\i2c_lcd.h
 	"stm32f10x.h"
 	"i2c.h"
 	<stdint.h>
@@ -434,16 +434,22 @@
 	"stm32f10x_wwdg.h"
 	"stm32f10x_rcc.h"
 
-1695450215 source:f:\admin\documents\1_git_stm32\i2c_lcd_config\src\i2c.c
+1696154503 source:f:\admin\documents\1_git_stm32\i2c_lcd_config\src\i2c.c
 	<stm32f10x.h>
 	"I2C.h"
 
-1695452129 source:f:\admin\documents\1_git_stm32\i2c_lcd_config\src\i2c_lcd.c
+1696391781 source:f:\admin\documents\1_git_stm32\i2c_lcd_config\src\i2c_lcd.c
 	"i2c.h"
 	"i2c_lcd.h"
 
 1695180221 source:f:\admin\documents\1_git_stm32\i2c_lcd_config\src\startup_stm32f10x_md.s
 
 1301918638 source:f:\admin\documents\1_git_stm32\i2c_lcd_config\src\system_stm32f10x.c
+	"stm32f10x.h"
+
+1696903430 source:f:\admin\documents\1_git_stm32\i2c_lcd_config\src\hc-sr04.c
+	<HC-SR04.h>
+
+1584023351 f:\admin\documents\1_git_stm32\i2c_lcd_config\src\hc-sr04.h
 	"stm32f10x.h"
 

@@ -1746,16 +1746,16 @@ OUTPUT(bin\Release\thNumber_config.elf elf32-littlearm)
  .debug_line    0x00000b6a       0xa8 obj\release\src\startup_stm32f10x_md.o
  .debug_line    0x00000c12      0x1a5 obj\release\src\system_stm32f10x.o
 
-.debug_str      0x00000000      0xb5e
+.debug_str      0x00000000      0xb8d
  .debug_str     0x00000000      0x51b obj\release\spl\src\stm32f10x_gpio.o
                                 0x571 (size before relaxing)
  .debug_str     0x0000051b      0x412 obj\release\spl\src\stm32f10x_rcc.o
                                 0x65b (size before relaxing)
  .debug_str     0x0000092d       0xb5 obj\release\src\delay.o
                                 0x25c (size before relaxing)
- .debug_str     0x000009e2       0xa0 obj\release\src\main.o
-                                0x3f7 (size before relaxing)
- .debug_str     0x00000a82       0xdc obj\release\src\system_stm32f10x.o
+ .debug_str     0x000009e2       0xcf obj\release\src\main.o
+                                0x3fb (size before relaxing)
+ .debug_str     0x00000ab1       0xdc obj\release\src\system_stm32f10x.o
                                 0x32d (size before relaxing)
 
 .debug_frame    0x00000000      0x66c

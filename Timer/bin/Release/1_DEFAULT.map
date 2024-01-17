@@ -1229,6 +1229,12 @@ Discarded input sections
  .text          0x00000000        0x0 obj\release\src\main.o
  .data          0x00000000        0x0 obj\release\src\main.o
  .bss           0x00000000        0x0 obj\release\src\main.o
+ .text.GPIO_INIT
+                0x00000000       0x3c obj\release\src\main.o
+ .text.delay_us
+                0x00000000       0x1c obj\release\src\main.o
+ .text.delay_ms
+                0x00000000       0x28 obj\release\src\main.o
  .data          0x00000000        0x0 obj\release\src\startup_stm32f10x_md.o
  .bss           0x00000000        0x0 obj\release\src\startup_stm32f10x_md.o
  .text          0x00000000        0x0 obj\release\src\system_stm32f10x.o
@@ -1604,32 +1610,33 @@ OUTPUT(bin\Release\1_DEFAULT.elf elf32-littlearm)
  .comment       0x0000006e       0x6f obj\release\src\main.o
  .comment       0x0000006e       0x6f obj\release\src\system_stm32f10x.o
 
-.debug_info     0x00000000     0x4888
+.debug_info     0x00000000     0x49ad
  .debug_info    0x00000000      0x560 obj\release\spl\src\misc.o
  .debug_info    0x00000560      0x891 obj\release\spl\src\stm32f10x_gpio.o
  .debug_info    0x00000df1      0x946 obj\release\spl\src\stm32f10x_rcc.o
  .debug_info    0x00001737     0x234c obj\release\spl\src\stm32f10x_tim.o
- .debug_info    0x00003a83      0x8d9 obj\release\src\main.o
- .debug_info    0x0000435c       0x64 obj\release\src\startup_stm32f10x_md.o
- .debug_info    0x000043c0      0x4c8 obj\release\src\system_stm32f10x.o
+ .debug_info    0x00003a83      0x9fe obj\release\src\main.o
+ .debug_info    0x00004481       0x64 obj\release\src\startup_stm32f10x_md.o
+ .debug_info    0x000044e5      0x4c8 obj\release\src\system_stm32f10x.o
 
-.debug_abbrev   0x00000000      0xba6
+.debug_abbrev   0x00000000      0xbcd
  .debug_abbrev  0x00000000      0x158 obj\release\spl\src\misc.o
  .debug_abbrev  0x00000158      0x202 obj\release\spl\src\stm32f10x_gpio.o
  .debug_abbrev  0x0000035a      0x270 obj\release\spl\src\stm32f10x_rcc.o
  .debug_abbrev  0x000005ca      0x2c4 obj\release\spl\src\stm32f10x_tim.o
- .debug_abbrev  0x0000088e      0x194 obj\release\src\main.o
- .debug_abbrev  0x00000a22       0x14 obj\release\src\startup_stm32f10x_md.o
- .debug_abbrev  0x00000a36      0x170 obj\release\src\system_stm32f10x.o
+ .debug_abbrev  0x0000088e      0x1bb obj\release\src\main.o
+ .debug_abbrev  0x00000a49       0x14 obj\release\src\startup_stm32f10x_md.o
+ .debug_abbrev  0x00000a5d      0x170 obj\release\src\system_stm32f10x.o
 
-.debug_loc      0x00000000     0x2c5d
+.debug_loc      0x00000000     0x2cbc
  .debug_loc     0x00000000      0x193 obj\release\spl\src\misc.o
  .debug_loc     0x00000193      0x569 obj\release\spl\src\stm32f10x_gpio.o
  .debug_loc     0x000006fc      0x726 obj\release\spl\src\stm32f10x_rcc.o
  .debug_loc     0x00000e22     0x1d7f obj\release\spl\src\stm32f10x_tim.o
- .debug_loc     0x00002ba1       0xbc obj\release\src\system_stm32f10x.o
+ .debug_loc     0x00002ba1       0x5f obj\release\src\main.o
+ .debug_loc     0x00002c00       0xbc obj\release\src\system_stm32f10x.o
 
-.debug_aranges  0x00000000      0x558
+.debug_aranges  0x00000000      0x570
  .debug_aranges
                 0x00000000       0x40 obj\release\spl\src\misc.o
  .debug_aranges
@@ -1639,30 +1646,30 @@ OUTPUT(bin\Release\1_DEFAULT.elf elf32-littlearm)
  .debug_aranges
                 0x00000200      0x2d0 obj\release\spl\src\stm32f10x_tim.o
  .debug_aranges
-                0x000004d0       0x40 obj\release\src\main.o
+                0x000004d0       0x58 obj\release\src\main.o
  .debug_aranges
-                0x00000510       0x20 obj\release\src\startup_stm32f10x_md.o
+                0x00000528       0x20 obj\release\src\startup_stm32f10x_md.o
  .debug_aranges
-                0x00000530       0x28 obj\release\src\system_stm32f10x.o
+                0x00000548       0x28 obj\release\src\system_stm32f10x.o
 
-.debug_ranges   0x00000000      0x638
+.debug_ranges   0x00000000      0x650
  .debug_ranges  0x00000000       0x30 obj\release\spl\src\misc.o
  .debug_ranges  0x00000030       0x98 obj\release\spl\src\stm32f10x_gpio.o
  .debug_ranges  0x000000c8      0x128 obj\release\spl\src\stm32f10x_rcc.o
  .debug_ranges  0x000001f0      0x3d8 obj\release\spl\src\stm32f10x_tim.o
- .debug_ranges  0x000005c8       0x30 obj\release\src\main.o
- .debug_ranges  0x000005f8       0x40 obj\release\src\system_stm32f10x.o
+ .debug_ranges  0x000005c8       0x48 obj\release\src\main.o
+ .debug_ranges  0x00000610       0x40 obj\release\src\system_stm32f10x.o
 
-.debug_line     0x00000000     0x191c
+.debug_line     0x00000000     0x196a
  .debug_line    0x00000000      0x1a2 obj\release\spl\src\misc.o
  .debug_line    0x000001a2      0x34b obj\release\spl\src\stm32f10x_gpio.o
  .debug_line    0x000004ed      0x423 obj\release\spl\src\stm32f10x_rcc.o
  .debug_line    0x00000910      0xbd5 obj\release\spl\src\stm32f10x_tim.o
- .debug_line    0x000014e5      0x1ea obj\release\src\main.o
- .debug_line    0x000016cf       0xa8 obj\release\src\startup_stm32f10x_md.o
- .debug_line    0x00001777      0x1a5 obj\release\src\system_stm32f10x.o
+ .debug_line    0x000014e5      0x238 obj\release\src\main.o
+ .debug_line    0x0000171d       0xa8 obj\release\src\startup_stm32f10x_md.o
+ .debug_line    0x000017c5      0x1a5 obj\release\src\system_stm32f10x.o
 
-.debug_str      0x00000000     0x1a94
+.debug_str      0x00000000     0x1af2
  .debug_str     0x00000000      0x3a8 obj\release\spl\src\misc.o
                                 0x3f5 (size before relaxing)
  .debug_str     0x000003a8      0x386 obj\release\spl\src\stm32f10x_gpio.o
@@ -1671,19 +1678,19 @@ OUTPUT(bin\Release\1_DEFAULT.elf elf32-littlearm)
                                 0x651 (size before relaxing)
  .debug_str     0x00000b40      0xb69 obj\release\spl\src\stm32f10x_tim.o
                                 0xe27 (size before relaxing)
- .debug_str     0x000016a9      0x36e obj\release\src\main.o
-                                0x93a (size before relaxing)
- .debug_str     0x00001a17       0x7d obj\release\src\system_stm32f10x.o
+ .debug_str     0x000016a9      0x3cc obj\release\src\main.o
+                                0x995 (size before relaxing)
+ .debug_str     0x00001a75       0x7d obj\release\src\system_stm32f10x.o
                                 0x323 (size before relaxing)
 
-.debug_frame    0x00000000      0xd14
+.debug_frame    0x00000000      0xd64
  .debug_frame   0x00000000       0x6c obj\release\spl\src\misc.o
  .debug_frame   0x0000006c      0x1b0 obj\release\spl\src\stm32f10x_gpio.o
  .debug_frame   0x0000021c      0x228 obj\release\spl\src\stm32f10x_rcc.o
  .debug_frame   0x00000444      0x754 obj\release\spl\src\stm32f10x_tim.o
- .debug_frame   0x00000b98       0xa0 obj\release\src\main.o
- .debug_frame   0x00000c38       0x48 obj\release\src\system_stm32f10x.o
- .debug_frame   0x00000c80       0x28 f:/program files/embitz/1.11/share/em_armgcc/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m\libg_n.a(lib_a-exit.o)
- .debug_frame   0x00000ca8       0x2c f:/program files/embitz/1.11/share/em_armgcc/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m\libg_n.a(lib_a-init.o)
- .debug_frame   0x00000cd4       0x20 f:/program files/embitz/1.11/share/em_armgcc/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m\libg_n.a(lib_a-memset.o)
- .debug_frame   0x00000cf4       0x20 f:/program files/embitz/1.11/share/em_armgcc/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m\libnosys_s.a(_exit.o)
+ .debug_frame   0x00000b98       0xf0 obj\release\src\main.o
+ .debug_frame   0x00000c88       0x48 obj\release\src\system_stm32f10x.o
+ .debug_frame   0x00000cd0       0x28 f:/program files/embitz/1.11/share/em_armgcc/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m\libg_n.a(lib_a-exit.o)
+ .debug_frame   0x00000cf8       0x2c f:/program files/embitz/1.11/share/em_armgcc/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m\libg_n.a(lib_a-init.o)
+ .debug_frame   0x00000d24       0x20 f:/program files/embitz/1.11/share/em_armgcc/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m\libg_n.a(lib_a-memset.o)
+ .debug_frame   0x00000d44       0x20 f:/program files/embitz/1.11/share/em_armgcc/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m\libnosys_s.a(_exit.o)

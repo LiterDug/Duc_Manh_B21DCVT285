@@ -15,7 +15,7 @@ static void I2C_LCD_Write_4bit(uint8_t u8Data);
 static void I2C_LCD_FlushVal(void);
 static void I2C_LCD_WriteCmd(uint8_t u8Cmd);
 
-void I2C_LCD_FlushVal(void)
+void I2C_LCD_FlushVal(void) // Hàm gửi u8LcdTmp đến i2c
 {
 	uint8_t i;
 
@@ -64,7 +64,6 @@ void I2C_LCD_Init(void)
 	I2C_LCD_WriteCmd(DISP_ON);  // Bật hiển thị
 	I2C_LCD_WriteCmd(CURSOR_ON);    // Bật con trỏ
 	I2C_LCD_WriteCmd(CLR_SCR);  // Xóa màn hình
-//	I2C_LCD_WriteCmd(BLINK_OFF);
 }
 
 void I2C_LCD_Write_4bit(uint8_t u8Data) // Gửi 4 bit dữ liệu tới màn hình LCD
@@ -122,7 +121,7 @@ void LCD_WaitBusy(void)
     u8LCD_Buff[LCD_RW] = 1;
     I2C_LCD_FlushVal();
 
-    // Kiểm tra bit busy flag (bit thứ 7 của LCD) bằng cách gửi ENABLE
+    // Lặp cho đến khi màn hình LCD không còn bận (bit thứ 3 của màn hình LCD là 0)
     do
     {
         u8LCD_Buff[LCD_EN] = 1;
@@ -142,31 +141,42 @@ void LCD_WaitBusy(void)
 
 void I2C_LCD_WriteCmd(uint8_t u8Cmd)
 {
+    // Chờ màn hình LCD xử lý xong trước khi gửi lệnh mới
+    LCD_WaitBusy();
 
-	LCD_WaitBusy();
+    // Thiết lập RS (Register Select) thành 0 để gửi lệnh
+    u8LCD_Buff[LCD_RS] = 0;
+    I2C_LCD_FlushVal();
 
-	u8LCD_Buff[LCD_RS] = 0;
-	I2C_LCD_FlushVal();
+    // Thiết lập RW (Read/Write) thành 0 để ghi dữ liệu
+    u8LCD_Buff[LCD_RW] = 0;
+    I2C_LCD_FlushVal();
 
-	u8LCD_Buff[LCD_RW] = 0;
-	I2C_LCD_FlushVal();
+    // Gửi 4 bit cao của lệnh
+    I2C_LCD_Write_4bit(u8Cmd >> 4);
 
-	I2C_LCD_Write_4bit(u8Cmd >> 4);
-	I2C_LCD_Write_4bit(u8Cmd);
+    // Gửi 4 bit thấp của lệnh
+    I2C_LCD_Write_4bit(u8Cmd);
 }
+
 
 void LCD_Write_Chr(char chr)
 {
+    LCD_WaitBusy();  // Chờ đợi màn hình LCD xử lý xong dữ liệu
 
-	LCD_WaitBusy();
-	u8LCD_Buff[LCD_RS] = 1;
-	I2C_LCD_FlushVal();
-	u8LCD_Buff[LCD_RW] = 0;
-	I2C_LCD_FlushVal();
-	I2C_LCD_Write_4bit(chr >> 4);
-	I2C_LCD_Write_4bit(chr);
+    u8LCD_Buff[LCD_RS] = 1;  // Thiết lập RS thành 1 để gửi dữ liệu
+    I2C_LCD_FlushVal();  // Gửi giá trị mới của u8LCD_Buff lên màn hình LCD
 
+    u8LCD_Buff[LCD_RW] = 0;  // Thiết lập RW thành 0 để gửi dữ liệu (ghi)
+    I2C_LCD_FlushVal();  // Gửi giá trị mới của u8LCD_Buff lên màn hình LCD
+
+    // Gửi 4 bit cao của ký tự
+    I2C_LCD_Write_4bit(chr >> 4);
+
+    // Gửi 4 bit thấp của ký tự
+    I2C_LCD_Write_4bit(chr);
 }
+
 
 void I2C_LCD_Puts(char *sz)
 {
